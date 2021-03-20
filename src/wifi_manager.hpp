@@ -10,8 +10,8 @@ class wifi_manager {
     void printIP(){Serial.println(WiFi.localIP());};
 
     private:
-    const char* ssid     = "Lan House";
-    const char* password = "lan160lan";
+    const char* ssid     = "Fone";
+    const char* password = "12345678";
     void connect(){WiFi.begin(ssid, password);}
 };
 
