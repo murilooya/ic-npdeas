@@ -5,14 +5,10 @@
 #include "Adafruit_Sensor.h"
 #include "DHT.h"
 
-#define DHTPIN 15
-#define DHTTYPE DHT22
-
-DHT dht (DHTPIN, DHTTYPE);
-
 class dht_sensor{
     public:
         dht_sensor(){
+            dht = new DHT(dht_sensor::DHTPIN, dht_sensor::DHTTYPE);
             dhtBegin();
         }; //dht begin
 
@@ -31,6 +27,11 @@ class dht_sensor{
         float temperature;
         float humidity;
 
+        static const uint8_t DHTPIN = 15;
+        static const uint8_t DHTTYPE = 22;
+
+        DHT* dht;
+
         float getHumidity() {
             return humidity;
         };
@@ -40,15 +41,15 @@ class dht_sensor{
         };
 
         void dhtBegin() {
-            dht.begin();
+            dht->begin();
         };
         
         void readTemperature() {
-            temperature = dht.readTemperature();
+            temperature = dht->readTemperature();
         };
 
         void readHumidity() {
-            humidity = dht.readHumidity();
+            humidity = dht->readHumidity();
         };
 
         void printTemperature(){
