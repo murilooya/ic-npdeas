@@ -1,14 +1,19 @@
 #include "wifi_manager.hpp"
 #include "sensors.hpp"
+#include "PubSubClient.h"
+#include "mqtt.hpp"
 
-wifi_manager wifi;
 dht_sensor dhtSensor;
+wifi_manager wifi;
+mqtt_client mqtt;
 
 void setup() {
-  // put your setup code here, to run once:
+
   Serial.begin (9800);
   dhtSensor = dht_sensor();
   wifi = wifi_manager();
+  mqtt = mqtt_client();
+  PubSubClient client (wifi.getWifiClient());
 }
 
 void loop() {

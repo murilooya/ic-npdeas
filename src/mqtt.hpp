@@ -3,30 +3,50 @@
 
 #include "PubSubClient.h"
 #include "wifi_manager.hpp"
+#include "String.h"
 
-class mqtt{
+class mqtt_client{
     public:
-        mqtt();
-        void mqttConnect(){
-            client.setServer(mqttServer, mqttPort);
+        mqtt_client(){
+            setupMQTT();
         };
-        
+
+        void mqttloop(){
+            loop();
+        }
+
+        void publishMQTT(const char* topic, const char* message){
+            client.publish(topic, message);
+        }
+
     private:
         const char* mqttServer = "broker.hivemq.com";
         const int mqttPort = 1883;
+
+        String ClientId;
+
         PubSubClient client;
-        void reconnect() {
-        Serial.println("Conectando ao MQTT Broker...");
-        while (!client.connected()) {
-            Serial.println("Reconectando ao MQTT Broker..");
-            String clientId = "ESP32Client-";
-            clientId += String(random(0xffff), HEX);
-            
-            if (client.connect(clientId.c_str())) {
-                Serial.println("Connected.");
-            }     
+
+        void loop(){
+            client.loop();
         }
-}
+
+        void setupMQTT() {
+            client.setServer(mqttServer, mqttPort);
+        }
+
+        void reconnect() {
+            Serial.println("Conectando ao MQTT Broker...");
+                while (!client.connected()) {
+                    Serial.println("Reconectando ao MQTT Broker..");
+                    String clientId = "ESP32Client-";
+                    clientId += String(random(0xffff), HEX);
+                    
+                    if (client.connect(clientId.c_str())) {
+                        Serial.println("Connected.");
+                    }     
+                }
+            }
 };
 
 
